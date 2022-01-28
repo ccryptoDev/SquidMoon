@@ -43,6 +43,7 @@ function getMetaMaskInstalled() {
 /** @return whether MetaMask connected successfuly. */
 async function connectMetamask() {
   try {
+    // @ts-ignore
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
     return accounts[0];
   } catch (err) {
@@ -54,6 +55,7 @@ async function connectMetamask() {
 /** @return the first `userAddress` from the list of connected addresses. */
 async function getUserAddress() {
   try{
+    // @ts-ignore
     const accounts = await window.ethereum.request({ method: 'eth_accounts' });
     return accounts[0] || "";
   } catch(err) {
@@ -65,6 +67,7 @@ async function getUserAddress() {
 /** Connects to the contract at `CONTRACT_ADDRESS`. */
 async function loadContract() {
   if (typeof contract === 'undefined') {
+    // @ts-ignore
     window.web3 = new Web3(window.ethereum);
     contract = await new window.web3.eth.Contract(ToadABI, CONTRACT_ADDRESS);
   }
