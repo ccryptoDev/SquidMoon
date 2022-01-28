@@ -13,7 +13,7 @@ const BaseModal = (props: Props) => {
   return (
     <div
       className={`modal fade ${show === true ? "show" : ""}`}
-      id="buynow-modal"
+      id="modal"
       onClick={closeModal}
     >
       <div
@@ -24,7 +24,6 @@ const BaseModal = (props: Props) => {
       >
         <div className="modal-content">
           <div className="modal-header">
-            <h3 id="myModalLabel">Buy It Now</h3>
             <button type="button" className="close" onClick={closeModal}>
               &times;
             </button>

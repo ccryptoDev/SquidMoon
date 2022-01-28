@@ -2,7 +2,7 @@ import Web3 from 'web3';
 import { ethers } from 'ethers';
 import Web3Modal from 'web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
-import ToadABI from './abi.json';
+import contractABI from './abi.json';
 import { CONTRACT_ADDRESS, INFURA_KEY } from './constants'
 
 let contract: any;
@@ -69,7 +69,7 @@ async function loadContract() {
   if (typeof contract === 'undefined') {
     // @ts-ignore
     window.web3 = new Web3(window.ethereum);
-    contract = await new window.web3.eth.Contract(ToadABI, CONTRACT_ADDRESS);
+    contract = await new window.web3.eth.Contract(contractABI, CONTRACT_ADDRESS);
   }
 }
 
@@ -89,11 +89,30 @@ async function hasSaleStarted() {
   }
 }
 
+const mintNFT = async() => {
+  if (typeof contract === 'undefined') {
+    // @ts-ignore
+    window.web3 = new Web3(window.ethereum);
+    const contract = await new window.web3.eth.Contract(contractABI, CONTRACT_ADDRESS);
+    const walletAddr = await getUserAddress()
+    try {
+      let transaction: any = await contract.methods.mintNFT().send({
+        from: walletAddr
+      })
+  
+      return transaction
+    } catch (err) {
+      console.log(err)
+      return err
+    }
+  }
+}
+
 async function purchaseToad(numBought: number, totalAmount: number) {
   const connection = await web3modal.connect();
   const provider = new ethers.providers.Web3Provider(connection);
   const signer = provider.getSigner();
-  const contract = new ethers.Contract(CONTRACT_ADDRESS, ToadABI, signer);
+  const contract = new ethers.Contract(CONTRACT_ADDRESS, contractABI, signer);
   const price = ethers.utils.parseUnits(`${totalAmount}`, 'ether');
   
   let transaction = await contract.mintToad(numBought, {
@@ -103,4 +122,4 @@ async function purchaseToad(numBought: number, totalAmount: number) {
   return transaction
 }
 
-export { connectWeb3, getCurrentIndex, getUserAddress, getMetaMaskInstalled, connectMetamask, purchaseToad, hasSaleStarted, loadContract };
+export { connectWeb3, getCurrentIndex, getUserAddress, getMetaMaskInstalled, connectMetamask, purchaseToad, hasSaleStarted, loadContract, mintNFT };

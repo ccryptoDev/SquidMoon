@@ -1,12 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { NFTtype } from '../../utils/types'
 import limitLogo from '../../assets/mint_limit_logo.png'
 import Img1 from '../../assets/1.png'
 import Img2 from '../../assets/2.png'
 import Img3 from '../../assets/3.png'
 import Img4 from '../../assets/4.png'
-import BaseModal from '../modal/baseModal'
-import { NFTContent } from '../modal/nftContent'
 
 interface Props {
   nftData: NFTtype;
@@ -23,11 +21,6 @@ const NFT = ({
     Img3,
     Img4
   ]
-  const [show, setShow] = useState(false)
-
-  const closeModal = () => {
-    setShow(false)
-  }
 
   return (
    <div className="nft">
@@ -42,9 +35,6 @@ const NFT = ({
       <div className="nft-title">{nftData.title}</div>
       <div className="nft-desc">{nftData.desc}</div>
     </div>
-    <BaseModal show={show} closeModal={closeModal}>
-      <NFTContent closeModal={closeModal} />
-    </BaseModal>
    </div>
   )
 }

@@ -1,7 +1,7 @@
-export const CONTRACT_ADDRESS = "0x42D5F264e199Bdf6a341d95331bFec9EFB1a7f2C"
+export const CONTRACT_ADDRESS = "0x60dCA282aBf7B94397431785ac5f914D69Fc7f3E"
 export const INFURA_KEY="e632a702eec64a4d867d65d8923d4309"
 
-export const configNetwork = "mainnet";
+export const configNetwork = "rinkeby";
 
 export const WalletTypes = {
   default: 0,
@@ -23,6 +23,13 @@ export const Config = {
   },
   mainnet: {
     etherscanLink: "https://etherscan.io",
+    defaultGasPrice: "15",
+    transactionText: "Transaction Pending",
+    coinGeckoApi: "https://api.coingecko.com/api/v3/coins",
+    infuraId: "c7a95b91ffae44e3b7fb80d9fbb98939",
+  },
+  rinkeby: {
+    etherscanLink: "https://rinkey.etherscan.io",
     defaultGasPrice: "15",
     transactionText: "Transaction Pending",
     coinGeckoApi: "https://api.coingecko.com/api/v3/coins",
