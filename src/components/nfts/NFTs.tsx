@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { NFTdata } from '../../pages/home/NFTdata'
 import { NFTtype } from '../../utils/types'
 import './style.scss'
@@ -7,7 +7,7 @@ import limitLogo from '../../assets/mint_limit_logo.png'
 import MintImg from '../../assets/1.png'
 import BaseModal from '../modal/baseModal'
 import { NFTContent } from '../modal/nftContent'
-import { mintNFT } from '../../utils/useWeb3'
+import { mintNFT, validateMinter } from '../../utils/useWeb3'
 
 interface Props {
   isConnected: boolean;
@@ -17,10 +17,23 @@ const NFTs = (props: Props) => {
   const {isConnected} = props
   const nfts: Array<NFTtype> = NFTdata;
   const [show, setShow] = useState(false)
+  const [canMint, setCanMint] = useState(true)
 
   const closeModal = () => {
     setShow(false)
   }
+
+  useEffect(() => {
+    async function checkMintable() {
+      if(isConnected) {
+        const isMintable: boolean = await validateMinter();
+        if( isMintable ) {
+          setCanMint(false);
+        }
+      }
+    }
+    checkMintable()
+  }, [isConnected])
 
   const minting = async() => {
     let transaction: any = await mintNFT();
@@ -30,7 +43,7 @@ const NFTs = (props: Props) => {
         setShow(true)
       }
     } else {
-      alert('You can not mint!');
+      alert('It seems an error to be caused on performing the minting');
     }
   }
 
@@ -55,9 +68,11 @@ const NFTs = (props: Props) => {
                 <div className="nft-title">Circle Henchman</div>
                 <div className="nft-desc">Holding this NFT will grant you early access beta launch permissions to upcoming Squid Moon games.</div>
               </div>
-              <div className="mint-button">
-                <button className="connBtn" onClick={minting}>Mint NFT</button>
-              </div>
+              {canMint ? 
+                (<div className="mint-button">
+                  <button className="connBtn" onClick={minting}>Mint NFT</button>
+                </div>) : <></>
+              }
             </div>
           </div> : <></>
         }

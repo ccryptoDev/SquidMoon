@@ -89,6 +89,17 @@ async function hasSaleStarted() {
   }
 }
 
+const validateMinter = async() => {
+  if (typeof contract === 'undefined') {
+    // @ts-ignore
+    window.web3 = new Web3(window.ethereum);
+    const contract = await new window.web3.eth.Contract(contractABI, CONTRACT_ADDRESS);
+    const walletAddr = await getUserAddress();
+    const canMint = await contract.methods.canMint(walletAddr);
+    return canMint;
+  }
+}
+
 const mintNFT = async() => {
   if (typeof contract === 'undefined') {
     // @ts-ignore
@@ -122,4 +133,4 @@ async function purchaseToad(numBought: number, totalAmount: number) {
   return transaction
 }
 
-export { connectWeb3, getCurrentIndex, getUserAddress, getMetaMaskInstalled, connectMetamask, purchaseToad, hasSaleStarted, loadContract, mintNFT };
+export { connectWeb3, getCurrentIndex, getUserAddress, getMetaMaskInstalled, connectMetamask, purchaseToad, hasSaleStarted, loadContract, mintNFT, validateMinter };
