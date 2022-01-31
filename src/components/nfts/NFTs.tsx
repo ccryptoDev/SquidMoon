@@ -8,15 +8,12 @@ import MintImg from '../../assets/1.png'
 import BaseModal from '../modal/baseModal'
 import { NFTContent } from '../modal/nftContent'
 import { mintNFT, validateMinter } from '../../utils/useWeb3'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 interface Props {
   isConnected: boolean;
 }
 
 const NFTs = (props: Props) => {
-  toast.configure();
   const {isConnected} = props
   const nfts: Array<NFTtype> = NFTdata;
   const [show, setShow] = useState(false)
@@ -29,10 +26,9 @@ const NFTs = (props: Props) => {
   useEffect(() => {
     async function checkMintable() {
       if(isConnected) {
-        const minted: boolean = await validateMinter();
-        if( minted ) {
+        const isMintable: boolean = await validateMinter();
+        if( isMintable ) {
           setCanMint(false);
-          toast.info('Since you have already minted one NFT, you can no longer mint another NFT.', { autoClose: 7000 })
         }
       }
     }
@@ -43,12 +39,11 @@ const NFTs = (props: Props) => {
     let transaction: any = await mintNFT();
     if( typeof transaction.events !== 'undefined' ) {
       if(transaction.events.MintNFT.returnValues.id) {
-        toast.success('You have minted a NFT successfully')
         console.log('mint successful!')
         setShow(true)
       }
     } else {
-      toast.error('It seems an error to be caused on performing the minting');
+      alert('It seems an error to be caused on performing the minting');
     }
   }
 
@@ -73,17 +68,11 @@ const NFTs = (props: Props) => {
                 <div className="nft-title">Circle Henchman</div>
                 <div className="nft-desc">Holding this NFT will grant you early access beta launch permissions to upcoming Squid Moon games.</div>
               </div>
-              <div className="mint-button">
-                <button 
-                  className={`connBtn ${canMint ? '' : 'disable'}`} 
-                  onClick={minting} 
-                  disabled={!canMint}
-                  data-title={`${!canMint ? 'Since you have already minted one NFT, you can no longer mint another NFT.' : ''}`}
-                >
-                  Mint NFT
-                </button>
-              </div>
-              
+              {canMint ? 
+                (<div className="mint-button">
+                  <button className="connBtn" onClick={minting}>Mint NFT</button>
+                </div>) : <></>
+              }
             </div>
           </div> : <></>
         }
