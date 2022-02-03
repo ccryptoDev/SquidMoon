@@ -171,17 +171,3 @@
     }
   }
 }
-
-// Footer (for actions)
-.modal-footer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 16px;
-  border-top: 0px solid #fff;
-  
-  > * {
-    margin: 0;
-  }
-}
